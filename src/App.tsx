@@ -6,6 +6,25 @@ import Home from './pages/Home'
 import Pricing from './pages/Pricing'
 import Receipt from './pages/Receipt'
 
+export type Task = {
+  reference: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  vat: number;
+  // payment in advance to make sure the customer won't change his mind
+  deposit: number;
+}
+
+export type Estimate = {
+  id?: string;
+  estimateNumber: string;
+  estimateDate: Date;
+  paymentDate: Date;
+  title: string;
+  tasks: Task[];
+}
+
 function App() {
   return (
     <div>
