@@ -2,6 +2,7 @@ import { createContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import NavBar from './components/NavBar'
+import EstimateDetails from './pages/EstimateDetails'
 import Estimate from './pages/EstimatePage'
 import Home from './pages/Home'
 import MyEstimates from './pages/MyEstimates'
@@ -32,7 +33,7 @@ const mockData: Estimate[] = [
   {
     id: '1',
     estimateNumber: '123',
-    estimateDate: new Date('12/12/11'),
+    estimateDate: new Date('12/08/11'),
     paymentDate: new Date('12/31/2022'),
     title: 'Super Estimate from Hell',
     tasks: [
@@ -96,6 +97,7 @@ function App() {
         <Route path='/new-estimate' element={<Estimate />} />
         <Route path='/new-receipt' element={<Receipt />} />
         <Route path='/my-estimates' element={<MyEstimates />} />
+        <Route path='/my-estimates/:id' element={<EstimateDetails />} />
         <Route path='/pricing' element={<Pricing />} />
       </Routes>
     </div>
