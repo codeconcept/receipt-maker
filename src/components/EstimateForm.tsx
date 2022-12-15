@@ -1,17 +1,32 @@
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import { Estimate } from '../App';
 import styles from './EstimateForm.module.css'
 
-export default function EstimateForm() {
+type estimateFormProps = {
+    onEstimateCreate: (data: Estimate) => void
+}
+
+export default function EstimateForm({ onEstimateCreate }: estimateFormProps) {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, control } = useForm<Estimate>();
     // to allow users to dynamically add tasks
     const { fields, append, remove } = useFieldArray({
         name: 'tasks',
         control
     })
-    const onSubmit: SubmitHandler<Estimate> = data => console.log(data);
+
+    function onSubmit(data: Estimate) {
+        onEstimateCreate(data);
+        navigate('/my-estimates');
+    }
 
     return <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="estimateTitle" className={styles.formlabel}>Estimate Title</label>
+        <input className={styles.forminput} {...register("title", { required: true })} placeholder='Estimate Title' id="estimateTitle" />
+        <span className={styles.formerror}>{errors.title && "Please, enter an estimate title"}</span>
+
+
         <label htmlFor="estimateNumber" className={styles.formlabel}>Estimate Number</label>
         <input className={styles.forminput} {...register("estimateNumber", { required: true })} placeholder='Estimate Number' id="estimateNumber" />
         <span className={styles.formerror}>{errors.estimateNumber && "Please, enter an estimate number"}</span>
