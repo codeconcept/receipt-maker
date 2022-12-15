@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { EstimateCtx } from '../App'
+import Card from '../components/Card'
 import { EstimateService } from '../services/estimateService'
 import PDFprinter from '../services/PDFprinter'
 
@@ -9,9 +10,11 @@ export default function MyEstimates() {
 
     return <>
         <h3>All my estimates</h3>
-        <div>TODO list all estimates</div>
+        {/* <div>
+            { JSON.stringify(estimates, null, 2)}
+        </div> */}
         <PDFprinter>
-            {JSON.stringify(estimates, null, 2)}
+            {estimates.map(est => (<Card data={est} key={est.id} />))}
         </PDFprinter>
     </>
 }
