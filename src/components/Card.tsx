@@ -6,15 +6,22 @@ type cardProps = {
 }
 
 export default function Card({ data }: cardProps) {
-    function calculateSubTotal(quantity: number, unitPrice: number) {
-        return (quantity * unitPrice).toFixed(2);
+    function calculateSubTotal(quantity: number, unitPrice: number, deposit: number) {
+        return (quantity * unitPrice - deposit).toFixed(2);
     }
 
     function calculateTotalWithoutTaxes() {
         const totalBeforeTaxes = data.tasks.reduce((acc, curr) => {
-            return acc += (curr.quantity * curr.unitPrice)
+            return acc += (curr.quantity * curr.unitPrice - curr.deposit)
         }, 0)
         return totalBeforeTaxes;
+    }
+
+    function calculateTotalDeposits() {
+        const totalDeposits = data.tasks.reduce((acc, curr) => {
+            return acc += curr.deposit
+        }, 0)
+        return totalDeposits;
     }
 
     function calculateTaxes() {
@@ -45,7 +52,7 @@ export default function Card({ data }: cardProps) {
                         <div className={styles.uprice}>€{t.unitPrice}</div>
                         <div className={styles.depo}>€{t.deposit}</div>
                         <div className={styles.vat}>{t.vat}%</div>
-                        <div className={styles.subto}>€{calculateSubTotal(t.quantity, t.unitPrice)}</div>
+                        <div className={styles.subto}>€{calculateSubTotal(t.quantity, t.unitPrice, t.deposit)}</div>
                     </div>
                 )
             })}
@@ -57,13 +64,21 @@ export default function Card({ data }: cardProps) {
                     <div>
                         € {calculateTotalWithoutTaxes().toFixed(2)}
                     </div>
+
+                    <div>
+                        Total deposits
+                    </div>
+                    <div>
+                        € {calculateTotalDeposits().toFixed(2)}
+                    </div>
+
                     <div>Total Taxes</div>
-                    <div>${calculateTaxes().toFixed(2)}</div>
+                    <div>€{calculateTaxes().toFixed(2)}</div>
                     <div>
                         Total taxes included
                     </div>
                     <div className={styles.totalwithtaxes}>
-                        ${(calculateTotalWithoutTaxes() + calculateTaxes()).toFixed(2)}
+                        €{(calculateTotalWithoutTaxes() + calculateTaxes() + calculateTotalDeposits()).toFixed(2)}
                     </div>
                 </div>
             </div>
